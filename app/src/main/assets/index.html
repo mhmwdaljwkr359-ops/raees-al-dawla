@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07111f">
+<title>رئيس الدولة</title>
+<style>
+:root{--bg:#07111f;--panel:#101e31;--gold:#e9b949;--muted:#9fb0c5;--line:#29415d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#173455,#07111f 55%);color:#f4f7fb;font-family:Tahoma,Arial,sans-serif}
+header{padding:14px 16px;background:#081321ed;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{font-size:22px;font-weight:bold;color:var(--gold)}.sub{font-size:11px;color:var(--muted);margin-top:4px}
+main{padding:12px;max-width:850px;margin:auto}.hero{border:1px solid #8b6a2d;border-radius:14px;overflow:hidden;background:#111}.hero img{width:100%;display:block}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}.stat,.panel{background:linear-gradient(145deg,#152943,#0d1929);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;color:var(--gold);font-size:18px;margin-top:6px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}button,select{background:#172b43;color:#fff;border:1px solid #45617f;border-radius:9px;padding:11px;font-weight:bold;font-size:13px}button.active,button.primary{background:linear-gradient(120deg,#b88625,#f1ca68);color:#17120a;border-color:#f6d989}
+h2{font-size:17px;color:var(--gold);margin:4px 0 12px}.row{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #263b52;font-size:13px}.row:last-child{border:0}
+select{width:100%;margin:8px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.actions button{flex:1;min-width:110px}
+.notice{color:var(--muted);font-size:12px;line-height:1.7}.map{height:180px;border-radius:12px;background:linear-gradient(140deg,#123b59,#071b2b);border:1px solid #365a78;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;margin:10px 0}
+footer{text-align:center;color:#8193aa;font-size:11px;padding:20px 8px;line-height:1.8}
+.progress{height:8px;background:#24384e;border-radius:10px;overflow:hidden;margin-top:5px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#b88625,#ffe08a)}
+.hidden{display:none}.pill{color:#b7d8ff;background:#1b3855;border-radius:20px;padding:4px 8px;font-size:11px}
+</style></head>
+<body>
+<header><div class="brand">👑 رئيس الدولة</div><div class="sub">PRESIDENT OF THE STATE · نسخة تجريبية استراتيجية</div></header>
+<main>
+<div class="hero"><img src="cover.jpg" alt="رئيس الدولة"></div>
+<div class="stats">
+ <div class="stat">💰 الخزانة<b id="money">$395.6B</b></div>
+ <div class="stat">👥 السكان<b id="people">112.7M</b></div>
+ <div class="stat">⚡ الاستقرار<b id="stability">82%</b></div>
+ <div class="stat">🛡️ القوة<b id="power">87</b></div>
+</div>
+<div class="panel">
+ <h2>🌍 اختر دولتك</h2>
+ <select id="country"></select>
+ <div class="notice">ابدأ بقيادة دولة، ووازن بين الاقتصاد والاستقرار والقوة العسكرية. هذه نسخة أولية تعمل دون اتصال بعد تثبيتها.</div>
+</div>
+<nav>
+<button class="active" data-tab="overview">🏛️ الدولة</button><button data-tab="economy">💰 الاقتصاد</button><button data-tab="army">🛡️ الجيش</button>
+<button data-tab="diplomacy">🤝 السياسة</button><button data-tab="world">🌐 العالم</button><button data-tab="save">💾 الحفظ</button>
+</nav>
+<section id="overview" class="panel">
+<h2>📊 تقرير الدولة</h2><div id="countryInfo"></div>
+<div class="actions"><button class="primary" onclick="nextTurn()">⏩ إنهاء الشهر</button><button onclick="eventPopup()">📰 أحداث الدولة</button></div>
+</section>
+<section id="economy" class="panel hidden"><h2>💰 إدارة الاقتصاد</h2>
+<div class="row"><span>رفع الضرائب</span><b id="tax">متوسطة</b></div><div class="row"><span>الإنتاج الصناعي</span><b>متنامٍ</b></div><div class="row"><span>البنية التحتية</span><b id="infra">62%</b></div>
+<div class="actions"><button onclick="invest('infra')">🏗️ تطوير البنية (10B)</button><button onclick="invest('industry')">🏭 دعم الصناعة (15B)</button><button onclick="taxChange()">⚖️ تغيير الضرائب</button></div></section>
+<section id="army" class="panel hidden"><h2>🛡️ القوات المسلحة</h2>
+<div class="row"><span>القوات البرية</span><b id="land">420,000</b></div><div class="row"><span>القوة الجوية</span><b>متوسطة</b></div><div class="row"><span>القوة البحرية</span><b>متوسطة</b></div>
+<div class="actions"><button onclick="invest('army')">🎖️ تدريب الجيش (8B)</button><button onclick="invest('defense')">🧱 تطوير الدفاع (12B)</button></div></section>
+<section id="diplomacy" class="panel hidden"><h2>🤝 العلاقات الدولية</h2><div class="row"><span>العلاقات الدبلوماسية</span><b>مستقرة</b></div><div class="row"><span>الاتفاقيات</span><b id="treaties">0</b></div><div class="actions"><button onclick="diplomacy()">🕊️ مبادرة سلام</button><button onclick="trade()">🚢 اتفاق تجاري</button></div></section>
+<section id="world" class="panel hidden"><h2>🌐 خريطة العالم</h2><div class="map">🗺️<br>خريطة استراتيجية تجريبية<br><span class="notice">اختيار الدولة متاح من القائمة بالأعلى. ستضاف حدود الدول التفاعلية وطبقات الخريطة في إصدار البيانات الجغرافية الكامل.</span></div><h2>دول يمكنك اختيارها</h2><div id="worldList" class="notice"></div></section>
+<section id="save" class="panel hidden"><h2>💾 حفظ التقدم</h2><p class="notice">يُحفظ تقدمك محلياً على الجهاز باستخدام مساحة التطبيق.</p><div class="actions"><button class="primary" onclick="saveGame()">حفظ الآن</button><button onclick="resetGame()">بدء لعبة جديدة</button></div><p id="saveMsg" class="notice"></p></section>
+<footer>تطوير وبرمجة: <b style="color:#e9b949">حودا التــــــــركي</b><br>+201044902095<br>رئيس الدولة © 2026 — نموذج أولي قابل للتطوير</footer>
+</main>
+<script>
+const countries=["مصر","السعودية","الإمارات","قطر","الكويت","البحرين","عُمان","الأردن","العراق","سوريا","لبنان","فلسطين","اليمن","ليبيا","تونس","الجزائر","المغرب","السودان","موريتانيا","الصومال","جيبوتي","جزر القمر","تركيا","إيران","إسرائيل","فرنسا","ألمانيا","إيطاليا","إسبانيا","المملكة المتحدة","روسيا","أوكرانيا","الصين","اليابان","الهند","باكستان","إندونيسيا","ماليزيا","كوريا الجنوبية","كوريا الشمالية","الولايات المتحدة","كندا","المكسيك","البرازيل","الأرجنتين","أستراليا","جنوب أفريقيا","نيجيريا","إثيوبيا","كينيا","غانا","السنغال","السويد","النرويج","فنلندا","بولندا","اليونان","هولندا","بلجيكا","سويسرا","النمسا","البرتغال","أفغانستان","بنغلاديش","سريلانكا","نيبال","تايلاند","فيتنام","الفلبين","سنغافورة","نيوزيلندا","تشيلي","بيرو","كولومبيا","فنزويلا","كوبا","جامايكا","أيسلندا","أيرلندا","التشيك","رومانيا","المجر","بلغاريا","صربيا","كرواتيا","سلوفاكيا","سلوفينيا","ألبانيا","البوسنة والهرسك","ليتوانيا","لاتفيا","إستونيا","بيلاروس","مولدوفا","جورجيا","أرمينيا","أذربيجان","كازاخستان","أوزبكستان","تركمانستان","قيرغيزستان","طاجيكستان","منغوليا","ميانمار","لاوس","كمبوديا","بروناي","تيمور الشرقية","بابوا غينيا الجديدة","فيجي","ساموا","تونغا","مدغشقر","موزمبيق","أنغولا","زامبيا","زيمبابوي","بوتسوانا","ناميبيا","ليسوتو","إسواتيني","الكاميرون","الغابون","الكونغو","جمهورية الكونغو الديمقراطية","أوغندا","رواندا","بوروندي","تنزانيا","مالاوي","مالي","النيجر","تشاد","بوركينا فاسو","بنين","توغو","ساحل العاج","غينيا","غينيا بيساو","سيراليون","ليبيريا","غامبيا","الرأس الأخضر","غينيا الاستوائية","جمهورية أفريقيا الوسطى","إريتريا","جنوب السودان","تركيا","قبرص","مالطا","لوكسمبورغ","موناكو","أندورا","سان مارينو","الفاتيكان","ليختنشتاين","الجبل الأسود","مقدونيا الشمالية","كوسوفو","غواتيمالا","بليز","هندوراس","السلفادور","نيكاراغوا","كوستاريكا","بنما","جمهورية الدومينيكان","هايتي","باهاماس","باربادوس","ترينيداد وتوباغو","غيانا","سورينام","بوليفيا","باراغواي","أوروغواي","الإكوادور","قيرغيزستان","بوتان","المالديف","موريشيوس","سيشل","جزر سليمان","فانواتو","ناورو","بالاو","ميكرونيزيا","جزر مارشال","كيريباتي","توفالو"];
+let state={country:"مصر",money:395.6,stability:82,power:87,people:112.7,infra:62,land:420000,tax:1,treaties:0,month:1};
+const $=id=>document.getElementById(id);
+countries.forEach(c=>{let o=document.createElement("option");o.textContent=c;o.value=c;$("country").appendChild(o)});
+$("country").value=state.country;$("worldList").textContent=countries.join(" • ");
+$("country").onchange=()=>{state.country=$("country").value;render()};
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));$(b.dataset.tab).classList.remove("hidden")});
+function render(){$("money").textContent="$"+state.money.toFixed(1)+"B";$("people").textContent=state.people.toFixed(1)+"M";$("stability").textContent=state.stability+"%";$("power").textContent=state.power;$("infra").textContent=state.infra+"%";$("land").textContent=state.land.toLocaleString("en-US");$("tax").textContent=["منخفضة","متوسطة","مرتفعة"][state.tax];$("treaties").textContent=state.treaties;$("countryInfo").innerHTML=`<div class="row"><span>الدولة</span><b>${state.country}</b></div><div class="row"><span>الشهر داخل اللعبة</span><b>${state.month}</b></div><div class="row"><span>البنية التحتية</span><b>${state.infra}%</b></div><div class="row"><span>الاستقرار</span><b>${state.stability}%</b></div><div class="row"><span>القوة العسكرية</span><b>${state.power}/100</b></div>`}
+function nextTurn(){state.month++;state.money+=8-state.tax*2;state.people+=.1;state.stability=Math.max(20,Math.min(100,state.stability+(state.tax===2?-2:1)));render();alert("انتهى الشهر "+state.month+" — تم تحديث اقتصاد الدولة.");saveGame()}
+function invest(type){let cost={infra:10,industry:15,army:8,defense:12}[type];if(state.money<cost){alert("الخزانة لا تكفي.");return}state.money-=cost;if(type==="infra")state.infra=Math.min(100,state.infra+8);if(type==="industry")state.money+=4;if(type==="army")state.land+=25000;if(type==="defense")state.power=Math.min(100,state.power+4);render();saveGame()}
+function taxChange(){state.tax=(state.tax+1)%3;render()}
+function diplomacy(){state.treaties++;state.stability=Math.min(100,state.stability+2);render();alert("تم إرسال مبادرة دبلوماسية داخل المحاكاة.")}
+function trade(){state.money+=5;state.treaties++;render();alert("تم توقيع اتفاق تجاري افتراضي وزيادة الخزانة 5 مليارات.")}
+function eventPopup(){alert("حدث الشهر: فرص استثمار جديدة وتحديات اقتصادية. اتخذ قراراتك بحكمة.")}
+function saveGame(){localStorage.setItem("raees_state",JSON.stringify(state));$("saveMsg").textContent="✅ تم حفظ التقدم على هذا الجهاز."}
+function resetGame(){if(confirm("بدء لعبة جديدة؟ سيتم مسح الحفظ الحالي.")){localStorage.removeItem("raees_state");location.reload()}}
+try{let old=JSON.parse(localStorage.getItem("raees_state"));if(old){state={...state,...old};$("country").value=state.country}}catch(e){}render();
+</script></body></html>
